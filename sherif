@@ -1,0 +1,206 @@
+
+-- create or replace view items1view as // =>> error 
+-- SELECT items.* , catogeries.* FROM items
+-- inner join catogeries on items.items_cat  = catogeries.categories_id
+
+
+create or replace view items1view as
+SELECT items.* , categories.* FROM items 
+inner join categories on items.items_cat = categories.categories_id;
+
+
+/// ==============  sherif rating ====
+
+create or replace view items1view as
+SELECT items.* , categories.* , ratingitemsview.stars ,items.items_price - items.items_price*items.items_discount/100 AS itempricediscount FROM items 
+inner join categories on items.items_cat = categories.categories_id 
+inner join ratingitemsview on items.items_id = ratingitemsview.ratingitems_itemsid;
+/// ==============================================
+////////////////////////////////////////////////////////
+
+SELECT items1view.* , 1 as favorite FROM items1view INNER JOIN favorite ON favorite.favorite_itemsid = items1view.items_id AND favorite.favorite_usersid = 28 UNION ALL SELECT *,0 as favorite FROM items1view WHERE items_id !=(SELECT items1view.items_id FROM items1view INNER JOIN favorite ON items1view.items_id= favorite.favorite_itemsid AND favorite.favorite_usersid = 28);
+
+///////////////////////////////////////////////////
+create or replace view myfavorite as
+SELECT favorite.*,items.*, items.items_price - items.items_price*items.items_discount/100 AS itempricediscount , users.users_id FROM favorite
+inner JOIN users on users.users_id = favorite.favorite_usersid 
+inner JOIN items on items.items_id = favorite.favorite_itemsid
+
+
+////////////////////////////////////////////////////
+-- 
+////////////////////////////////////////////////////
+
+create or replace view cartview as
+SELECT SUM(items.items_price - items.items_price*items.items_discount/100) AS itemsprice , COUNT(cart.cart_itemsid) AS countitems , cart.* ,items.* FROM cart INNER JOIN items ON cart.cart_itemsid = items.items_id WHERE cart_orders = 0 GROUP BY cart.cart_itemsid , cart.cart_usersid,cart.cart_orders;
+// =======================================
+
+create or replace view ordersview as
+SELECT orders.* , address .* FROM orders LEFT JOIN address ON address.address_id = orders.orders_address;
+
+// ============ can fetch data od address by addressid = ordersaddress
+
+
+create or replace view ordersdetailview as
+SELECT SUM(items.items_price - items.items_price*items.items_discount/100) AS itemsprice , COUNT(cart.cart_itemsid) AS countitems , cart.* ,items.* FROM cart 
+INNER JOIN items ON cart.cart_itemsid = items.items_id 
+WHERE cart_orders != 0 
+GROUP BY cart.cart_itemsid , cart.cart_usersid,cart.cart_orders;
+
+
+
+create or replace view notificationordersdetailview as
+SELECT  notification.* , ordersdetailview.* FROM notification 
+INNER JOIN ordersdetailview ON ordersdetailview.cart_usersid = notification_usersid
+
+// ==============================
+
+CREATE OR REPLACE VIEW itemstopselling AS
+SELECT COUNT(cart_id) AS countitems, cart.* , items.* ,items.items_price - items.items_price*items.items_discount/100 AS itempricediscount FROM cart INNER JOIN items ON items.items_id = cart.cart_itemsid WHERE cart_orders !=0 GROUP BY cart_itemsid ;
+
+
+// =========================
+ create or replace view ratingitemsview as
+SELECT ratingitems.*,items.*, items.items_price - items.items_price*items.items_discount/100 AS itempricediscount , SUM(ratingitems.ratingitems_rate) /COUNT(ratingitems.ratingitems_usersid ) AS stars  FROM ratingitems
+inner JOIN users on users.users_id = ratingitems.ratingitems_usersid 
+inner JOIN items on items.items_id = ratingitems.ratingitems_itemsid
+GROUP BY ratingitems.ratingitems_itemsid 
+-- // ===== addation from me ==================
+
+-- // create or replace view myfavorite as
+-- // SELECT favorite.*,items.*,users.users_id , SUM(items.items_price - items.items_price*items.items_discount/100) AS itemsdiscountprice FROM favorite
+-- // inner JOIN users on users.users_id = favorite.favorite_usersid 
+-- // inner JOIN items on items.items_id = favorite.favorite_itemsid
+
+-- // ===== addation from me ==================
+-- create or replace view ordersdetailview as
+-- SELECT SUM(items.items_price - items.items_price*items.items_discount/100) AS itemsprice , COUNT(cart.cart_itemsid) AS countitems , cart.* ,items.*,ordersview.* FROM cart 
+-- INNER JOIN items ON cart.cart_itemsid = items.items_id 
+-- INNER JOIN ordersview ON ordersview.orders_id = cart.cart_orders
+-- WHERE cart_orders != 0 
+-- GROUP BY cart.cart_itemsid , cart.cart_usersid,cart.cart_orders;
+
+-- // =======================
+-- -- REATE OR REPLACE VIEW items&categoriestopselling AS
+-- -- SELECT COUNT(cart_id) AS countitems, cart.* , items.* , categories.* FROM cart INNER JOIN items ON items.items_id = cart.cart_itemsid INNER JOIN categories ON items.items_cat = categories.categories_id WHERE cart_orders !=0 GROUP BY cart_itemsid DESC;
+-- // ====================================
+
+-- // create or replace view cartview as
+-- // SELECT SUM(items.items_price) AS itemsprice , COUNT(cart.cart_itemsid) AS countitems , cart.* ,items.* FROM cart INNER JOIN items ON cart.cart_itemsid = items.items_id WHERE cart_orders = 0 GROUP BY cart.cart_itemsid , cart.cart_usersid;
+
+
+-- //////////////////////////////////////////////////////////////
+
+-- SELECT SUM(cartview.itemsprice) AS totalprice ,SUM(cartview.countitems) AS totalitems , COUNT(cartview.countitems) AS differentitems FROM cartview;
+-- // calcutate for all customs and items
+
+-- ///////////////////////////////////////////////
+
+-- SELECT SUM(cartview.itemsprice) AS totalprice ,SUM(cartview.countitems) AS totalitems , COUNT(cartview.countitems) AS differentitems FROM cartview GROUP BY cartview.cart_usersid = 28;
+
+
+-- //==========================
+--  create or replace view ratingitemsview as
+-- SELECT ratingitems.*,items.*, items.items_price - items.items_price*items.items_discount/100 AS itempricediscount , SUM(ratingitems.ratingitems_rate) /COUNT(ratingitems.ratingitems_usersid ) AS stars FROM ratingitems
+-- inner JOIN users on users.users_id = ratingitems.ratingitems_usersid 
+-- inner JOIN items on items.items_id = ratingitems.ratingitems_itemsid
+
+SELECT items.* , catogeries.* ,ratingitemsview.stars FROM items
+inner join catogeries on items.items_cat  = catogeries.categories_id
+inner join ratingitemsview on items.items_id = ratingitemsview.ratingitems_itemsid
+
+// ======================
+  $s= $con->prepare("Insert Into ordersdetailsadmin 
+    (itemsprice,
+    countitems,
+    cart_id ,
+    cart_usersid,
+        cart_itemsid,
+        cart_orders,
+        items_id,
+    items_name,
+        items_name_ar,
+        items_desc,
+        items_decs_ar,
+            items_image,
+            items_count,
+            items_active,
+            items_price,
+            items_discount,
+            items_date,
+            items_cat
+            )
+    Select itemsprice,
+    countitems,
+    cart_id ,
+    cart_usersid,
+        cart_itemsid,
+        cart_orders,
+        items_id,
+    items_name,
+        items_name_ar,
+        items_desc,
+        items_decs_ar,
+            items_image,
+            items_count,
+            items_active,
+            items_price,
+            items_discount,
+            items_date,
+            items_cat
+    From ordersdetailview WHERE ordersdetailview.cart_orders = '$ordersid'");
+    $s->execute();
+    $data2=array(
+    "day"=> date("d"),
+    "mounth"=> date("m"),
+    "year"=> date("y")
+
+);
+updateData("ordersdetailsadmin ", $data2, "ordersdetailsadmin.cart_orders = $ordersid");
+    //=============================
+
+
+
+
+
+  //========================
+
+
+
+
+
+create or replace view ordersdeliverydetailsadmin as
+SELECT ordersdetailsadmin.* , orders.* FROM orders 
+INNER JOIN ordersdetailsadmin ON ordersdetailsadmin.cart_orders = orders.orders_id;
+
+//=================
+ SELECT SUM(ordersdeliverydetailsadmin.orders_totalprice) AS totalitemsprice, 
+COUNT(ordersdeliverydetailsadmin.id) AS totalnumberorders, 
+SUM(ordersdeliverydetailsadmin.countitems) AS totalcountitems , 
+SUM(ordersdeliverydetailsadmin.orders_pricedelivery) AS totalpricedelivery ,
+SUM(ordersdeliverydetailsadmin.orders_coupon) AS totaldiscountcoupon,
+SUM(ordersdeliverydetailsadmin.items_discount) AS totaldiscount
+FROM ordersdeliverydetailsadmin WHERE ordersdeliverydetailsadmin.orders_date BETWEEN "2023-09-25 22:04:34" AND "2023-09-25 22:08:39" GROUP BY ordersdeliverydetailsadmin.day ,ordersdeliverydetailsadmin.mounth , ordersdeliverydetailsadmin.year ;
+// =====================================
+
+ //=============================
+ create or replace view topdelivery as
+SELECT COUNT(ordersdeliverydetailsadmin.orders_delivery) AS count, ordersdeliverydetailsadmin.orders_delivery , SUM(ordersdeliverydetailsadmin.orders_pricedelivery) AS totalpricedelivery, delivery.* FROM  ordersdeliverydetailsadmin INNER JOIN delivery ON ordersdeliverydetailsadmin.orders_delivery = delivery.delivery_id GROUP BY ordersdeliverydetailsadmin.orders_delivery ;
+//===
+
+SELECT ordersdeliverydetailsadmin.* FROM ordersdeliverydetailsadmin WHERE ordersdeliverydetailsadmin.orders_date BETWEEN "2023-09-25 22:04:34" AND "2023-09-25 22:08:39";
+
+//====================
+create or replace view topusers as
+SELECT COUNT(ordersdeliverydetailsadmin.cart_usersid) AS count, ordersdeliverydetailsadmin.cart_usersid , SUM(ordersdeliverydetailsadmin.orders_totalprice) AS totalmoney, users.* FROM  ordersdeliverydetailsadmin INNER JOIN users ON ordersdeliverydetailsadmin.cart_usersid = users.users_id GROUP BY ordersdeliverydetailsadmin.cart_usersid;
+
+// ==========================
+SELECT ordersdeliverydetailsadmin.* FROM ordersdeliverydetailsadmin WHERE ordersdeliverydetailsadmin.orders_date BETWEEN "2023-09-25 22:04:34" AND "2023-09-25 22:08:39";
+
+//====================
+
+
+SELECT SUM(ordersdeliverydetailsadmin.itemsprice) AS totalitemsprice, COUNT(ordersdeliverydetailsadmin.id) AS totalnumberorders, SUM(ordersdeliverydetailsadmin.countitems) AS totalcountitems , SUM(ordersdeliverydetailsadmin.orders_pricedelivery) AS totalpricedelivery ,ordersdeliverydetailsadmin.* FROM ordersdeliverydetailsadmin WHERE ordersdeliverydetailsadmin.orders_date BETWEEN "2023-09-25 22:04:34" AND "2023-09-25 22:08:39" GROUP BY ordersdeliverydetailsadmin.cart_itemsid , ordersdeliverydetailsadmin.cart_usersid,ordersdeliverydetailsadmin.cart_orders;
+
+// ========================
+SELECT SUM(ordersdeliverydetailsadmin.orders_totalprice) AS totalitemsprice, COUNT(ordersdeliverydetailsadmin.id) AS totalnumberorders, SUM(ordersdeliverydetailsadmin.countitems) AS totalcountitems , SUM(ordersdeliverydetailsadmin.orders_pricedelivery) AS totalpricedelivery , SUM(ordersdeliverydetailsadmin.orders_coupon) AS totaldiscountcoupon, SUM(ordersdeliverydetailsadmin.items_discount) AS totaldiscount FROM ordersdeliverydetailsadmin WHERE ordersdeliverydetailsadmin.daY BETWEEN "25" AND "26" AND ordersdeliverydetailsadmin.year BETWEEN "2023" AND "2023" AND ordersdeliverydetailsadmin.mounth BETWEEN "5" AND "3" GROUP BY ordersdeliverydetailsadmin.day ,ordersdeliverydetailsadmin.mounth , ordersdeliverydetailsadmin.year;

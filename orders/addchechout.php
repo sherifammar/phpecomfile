@@ -9,7 +9,9 @@ $orderstype= filterRequest("orderstype");
 $orderspricedelivery= filterRequest("orderspricedelivery");
 $ordersprice= filterRequest("ordersprice");
 $orderscoupon= filterRequest("orderscoupon");
-$orderspaymentmethod= filterRequest("orderscoupon");
+// $orderspaymentmethod= filterRequest("orderscoupon"); 
+// orderspaymentmethod
+$orderspaymentmethod= filterRequest("orderspaymentmethod"); 
 $coupondiscount= filterRequest("coupondiscount");
 
 if ($orderstype == 1) { //if  1 == recive => do not add price of delivery in 

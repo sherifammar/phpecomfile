@@ -3,8 +3,8 @@ include "../connect.php";
 
 $usersid= filterRequest("usersid");
 // getAllData("ordersview","orders_usersid = '$usersid' AND orders_status = 4 ");
-getAllData("ordersdetailsadmin","1=1 AND orders_status = 4 AND orders_usersid = '$usersid'"); // solve problem of wael inthe end view
-
+// getAllData("ordersdetailsadmin","1=1 AND orders_status = 4 AND cart_usersid = '$usersid'"); // solve problem of wael inthe end view
+getAllData("ordersdetailsadmin","cart_usersid = '$usersid'");
 
 //=========
 // wait -> 0

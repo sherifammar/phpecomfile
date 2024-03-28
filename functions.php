@@ -121,7 +121,7 @@ function updateData($table, $data, $where, $json = true)
     return $count;
 }
 
-//============================= for food app
+//============================= for food app d
 
 // can delet status= sucess in prapare admin only 
 function updateDataAdmin($table, $data, $where, $json = false)

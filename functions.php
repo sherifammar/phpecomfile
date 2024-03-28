@@ -121,6 +121,40 @@ function updateData($table, $data, $where, $json = true)
     return $count;
 }
 
+//============================= for food app
+
+// can delet status= sucess in prapare admin only 
+function updateDataAdmin($table, $data, $where, $json = false)
+{
+    global $con;
+    $cols = array();
+    $vals = array();
+
+    foreach ($data as $key => $val) {
+        $vals[] = "$val";
+        $cols[] = "`$key` =  ? ";
+    }
+    $sql = "UPDATE $table SET " . implode(', ', $cols) . " WHERE $where";
+
+    $stmt = $con->prepare($sql);
+    $stmt->execute($vals);
+    $count = $stmt->rowCount();
+    if ($json == true) {
+    if ($count > 0) {
+        echo json_encode(array("status" => "success"));
+    } else {
+        echo json_encode(array("status" => "failure"));
+    }
+    }
+    return $count;
+}
+
+
+
+//======================================
+
+
+
 function deleteData($table, $where, $json = true)
 {
     global $con;

@@ -61,6 +61,7 @@ $data2=array(
     "year"=> date("y")
 
 );
+updateDataAdmin("ordersdetailsadmin", $data2, "ordersdetailsadmin.cart_orders = '$ordersid' AND ordersdetailsadmin.owner_items_id = '$owneritemsid'"); // using different update method
 updateData("ordersdetailsadmin ", $data2, "ordersdetailsadmin.cart_orders = $ordersid");
 // updateData("orders", $data, "orders_id = $ordersid AND orders_status = 1");// convert to delivery prepare to delivery
 insertNotification("sucess ","order is prepare",$usersid,"users$usersid", "none", "orderspending"); // save and send notification

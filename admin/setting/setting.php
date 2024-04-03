@@ -1,7 +1,7 @@
 <?php
 include "../../connect.php";
  
-
+//يتم الاضافى فى البدايه بواسط المبرج فى البدايه  يحدث التحديث بواسطه المستخدم
  $settingtitle=filterRequest("settingtitle");
  $settingbody = filterRequest("settingbody");
  $settingdeliverytime = filterRequest("settingdeliverytime");
@@ -14,8 +14,8 @@ include "../../connect.php";
 
 
  $data= array(
-    "setting_title" =>$settingtitle,
-    "setting_body" =>$settingbody,
+   "setting_title" =>$settingtitle,
+   "setting_body" =>$settingbody,
  "setting_deliverytime"=>$settingdeliverytime,
  "setting_startlat" =>$settingstartlat,
  "setting_long" =>$settinglong,	
@@ -23,4 +23,5 @@ include "../../connect.php";
  "setting_pricepekilo" =>$settingpricepekilo,
  "setting_createtime"=> $now
 );// rror=>solve ;;;
-insertData("setting", $data);
+// insertData("setting", $data);
+updateData("setting", $data,"setting_id = 1");

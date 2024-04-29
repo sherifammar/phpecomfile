@@ -204,3 +204,12 @@ SELECT SUM(ordersdeliverydetailsadmin.itemsprice) AS totalitemsprice, COUNT(orde
 
 // ========================
 SELECT SUM(ordersdeliverydetailsadmin.orders_totalprice) AS totalitemsprice, COUNT(ordersdeliverydetailsadmin.id) AS totalnumberorders, SUM(ordersdeliverydetailsadmin.countitems) AS totalcountitems , SUM(ordersdeliverydetailsadmin.orders_pricedelivery) AS totalpricedelivery , SUM(ordersdeliverydetailsadmin.orders_coupon) AS totaldiscountcoupon, SUM(ordersdeliverydetailsadmin.items_discount) AS totaldiscount FROM ordersdeliverydetailsadmin WHERE ordersdeliverydetailsadmin.daY BETWEEN "25" AND "26" AND ordersdeliverydetailsadmin.year BETWEEN "2023" AND "2023" AND ordersdeliverydetailsadmin.mounth BETWEEN "5" AND "3" GROUP BY ordersdeliverydetailsadmin.day ,ordersdeliverydetailsadmin.mounth , ordersdeliverydetailsadmin.year;
+
+
+
+// ==================== MOUNTH NAME
+SELECT SUM(ordersdeliverydetailsadmin.orders_totalprice) AS totalitemsprice, COUNT(ordersdeliverydetailsadmin.id) AS totalnumberorders, SUM(ordersdeliverydetailsadmin.countitems) AS totalcountitems , SUM(ordersdeliverydetailsadmin.orders_pricedelivery) AS totalpricedelivery , SUM(ordersdeliverydetailsadmin.orders_coupon) AS totaldiscountcoupon, SUM(ordersdeliverydetailsadmin.items_discount) AS totaldiscount ,MONTHNAME(ordersdeliverydetailsadmin.orders_date) AS mounth_name FROM ordersdeliverydetailsadmin GROUP BY MONTHNAME(ordersdeliverydetailsadmin.orders_date);
+//
+//================= 
+
+SELECT SUM(ordersdeliverydetailsadmin.orders_totalprice) AS totalitemsprice, COUNT(ordersdeliverydetailsadmin.id) AS totalnumberorders, SUM(ordersdeliverydetailsadmin.countitems) AS totalcountitems , SUM(ordersdeliverydetailsadmin.orders_pricedelivery) AS totalpricedelivery , SUM(ordersdeliverydetailsadmin.orders_coupon) AS totaldiscountcoupon, SUM(ordersdeliverydetailsadmin.items_discount) AS totaldiscount ,DAYNAME(ordersdeliverydetailsadmin.orders_date) AS Day_Name FROM ordersdeliverydetailsadmin GROUP BY DAYNAME(ordersdeliverydetailsadmin.orders_date);

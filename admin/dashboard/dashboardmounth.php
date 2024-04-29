@@ -3,15 +3,8 @@
 include '../../connect.php';
 
 //============== mounth
-$stmt = $con->prepare("SELECT SUM(ordersdeliverydetailsadmin.orders_totalprice) AS totalitemsprice, 
-COUNT(ordersdeliverydetailsadmin.id) AS totalnumberorders, 
-SUM(ordersdeliverydetailsadmin.countitems) AS totalcountitems , 
-SUM(ordersdeliverydetailsadmin.orders_pricedelivery) AS totalpricedelivery ,
-SUM(ordersdeliverydetailsadmin.orders_coupon) AS totaldiscountcoupon,
-SUM(ordersdeliverydetailsadmin.items_discount) AS totaldiscount ,
-ordersdeliverydetailsadmin.mounth
-FROM ordersdeliverydetailsadmin GROUP BY ordersdeliverydetailsadmin.mounth
-ORDER BY ordersdeliverydetailsadmin.mounth"
+$stmt = $con->prepare("SELECT SUM(ordersdeliverydetailsadmin.orders_totalprice) AS totalitemsprice, COUNT(ordersdeliverydetailsadmin.id) AS totalnumberorders, SUM(ordersdeliverydetailsadmin.countitems) AS totalcountitems , SUM(ordersdeliverydetailsadmin.orders_pricedelivery) AS totalpricedelivery , SUM(ordersdeliverydetailsadmin.orders_coupon) AS totaldiscountcoupon, SUM(ordersdeliverydetailsadmin.items_discount) AS totaldiscount ,MONTHNAME(ordersdeliverydetailsadmin.orders_date) AS mounth_name FROM ordersdeliverydetailsadmin GROUP BY MONTHNAME(ordersdeliverydetailsadmin.orders_date) ORDER BY mounth_name ;
+"
 );
 
  

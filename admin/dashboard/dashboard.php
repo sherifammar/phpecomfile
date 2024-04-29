@@ -4,12 +4,14 @@ include '../../connect.php';
 
 
 
-    $stmt = $con->prepare("SELECT SUM(ordersdeliverydetailsadmin.orders_totalprice) AS totalitemsprice, 
+    $stmt = $con->prepare("SELECT 
+    SUM(ordersdeliverydetailsadmin.orders_totalprice) AS totalitemsprice, 
 COUNT(ordersdeliverydetailsadmin.id) AS totalnumberorders, 
 SUM(ordersdeliverydetailsadmin.countitems) AS totalcountitems , 
 SUM(ordersdeliverydetailsadmin.orders_pricedelivery) AS totalpricedelivery ,
 SUM(ordersdeliverydetailsadmin.orders_coupon) AS totaldiscountcoupon,
 SUM(ordersdeliverydetailsadmin.items_discount) AS totaldiscount 
+
 
 FROM ordersdeliverydetailsadmin "
 );

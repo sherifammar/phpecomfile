@@ -3,12 +3,18 @@
 
 include "../../connect.php";
 
+ 
+ $stmt = $con->prepare("SELECT  * FROM items WHERE items_count <= items_active ");
 
-$checkcountitem = getData("items","items_count <= items_active" ,null ,false);
 
-if($checkcountitem >0){
-    sendGCM("Alert", "items is less", "admin", "none", "none");
-   
-   
-}
- // ===============
+$stmt->execute();
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$count  = $stmt->rowCount();
+
+    if ($count > 0){
+        sendGCM("Alert", "items is less", "admin", "none", "none");
+        echo json_encode(array("status" => "success", "data" => $data));
+        
+    } else {
+        echo json_encode(array("status" => "failure"));
+    }

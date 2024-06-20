@@ -5,7 +5,7 @@ $couponname= filterRequest("couponname");
 $couponcount= filterRequest("couponcount");
 $coupondiscount= filterRequest("coupondiscount");
 $couponexpiredate = filterRequest("couponexpiredate") ;
-$couponid = filterRequest("couponid") ;
+// $couponid = filterRequest("couponid") ;
 
 
 //=================
@@ -24,4 +24,4 @@ $couponid = filterRequest("couponid") ;
 
         
 
-    updateData("coupon", $data,"coupon_id = $couponid");
+    updateData("coupon", $data,"coupon_id = 1");

@@ -26,24 +26,55 @@ $now= date("Y-m-d h:i:s"); // error => it is time now
 //===== "coupon_id = '$orderscoupon'
 
 $checkcoupon = getData("coupon","coupon_id = '$orderscoupon' AND coupon_expiredate > '$now' AND coupon_count > 0" ,null ,false);
+//===================== old vesion
+// if($checkcoupon>0){
+//     // update of coupon count => decrease 1
 
-if($checkcoupon>0){
-    // update of coupon count => decrease 1
+// $stmt= $con ->prepare("SELECT  `coupon_count` FROM `coupon` WHERE `coupon`.`coupon_id` = '$orderscoupon'");
 
-$stmt= $con ->prepare("SELECT  `coupon_count` FROM `coupon` WHERE `coupon`.`coupon_id` = '$orderscoupon'");
+// $stmt->execute();
 
-$stmt->execute();
+//  $dec = $stmt->fetchColumn();
+//  $dec =$dec- 1;
+// //  $dec--;
+//  //==============
 
- $dec = $stmt->fetchColumn();
- $dec =$dec- 1;
-//  $dec--;
- //==============
-
-    $totalprice= $totalprice - $totalprice* $coupondiscount/100;
-    $stmt=$con->prepare("UPDATE `coupon` SET `coupon_count`= $dec WHERE coupon_id = '$orderscoupon'");
-    $stmt->execute();
-}
+//     $totalprice= $totalprice - $totalprice* $coupondiscount/100;
+//     $stmt=$con->prepare("UPDATE `coupon` SET `coupon_count`= $dec WHERE coupon_id = '$orderscoupon'");
+//     $stmt->execute();
+// }
  // ===============
+ $checkcouponrecorder = getData("couponrecorder","couponrecorder_couponname = '$couponrecordercouponname' AND couponrecorder_owneritems_id ='$owneritemsid' AND 	couponrecorder_usersid ='$usersid'" ,null ,false);
+if($checkcouponrecorder>0) {}else{
+    if($checkcoupon>0){
+        
+    
+        // update of coupon count => decrease 1
+    
+    $stmt= $con ->prepare("SELECT  `coupon_count` FROM `coupon` WHERE `coupon`.`coupon_id` = '$orderscoupon' AND owneritems_id ='$owneritemsid'");
+    
+    $stmt->execute();
+    
+     $dec = $stmt->fetchColumn();
+     $dec =$dec- 1;
+    //  $dec--;
+     //==============
+     $totalprice= $totalprice - $totalprice* $coupondiscount/100;
+     $stmt=$con->prepare("UPDATE `coupon` SET `coupon_count`= $dec WHERE coupon_id = '$orderscoupon' AND owneritems_id ='$owneritemsid'");
+         $stmt->execute();
+    
+         // update of coupon count => decrease 1
+         $data1 = array(
+            "couponrecorder_usersid"=>$usersid,// nanme colum in musql == var username
+            "couponrecorder_couponname"=>$couponrecordercouponname,
+             "couponrecorder_date"=>$now,
+           
+            
+        );
+        insertData('couponrecorder',$data1,false); 
+    }
+   
+}
 
 $data = array(
     "orders_usersid"=>$usersid,// nanme colum in musql == var username

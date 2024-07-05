@@ -45,14 +45,14 @@ $checkcoupon = getData("coupon","coupon_id = '$orderscoupon' AND coupon_expireda
 //     $stmt->execute();
 // }
  // ===============
- $checkcouponrecorder = getData("couponrecorder","couponrecorder_couponname = '$couponrecordercouponname' AND couponrecorder_owneritems_id ='$owneritemsid' AND 	couponrecorder_usersid ='$usersid'" ,null ,false);
+ $checkcouponrecorder = getData("couponrecorder","couponrecorder_couponname = '$couponrecordercouponname' AND couponrecorder_usersid ='$usersid'" ,null ,false);
 if($checkcouponrecorder>0) {}else{
     if($checkcoupon>0){
         
     
         // update of coupon count => decrease 1
     
-    $stmt= $con ->prepare("SELECT  `coupon_count` FROM `coupon` WHERE `coupon`.`coupon_id` = '$orderscoupon' AND owneritems_id ='$owneritemsid'");
+    $stmt= $con ->prepare("SELECT  `coupon_count` FROM `coupon` WHERE `coupon`.`coupon_id` = '$orderscoupon'");
     
     $stmt->execute();
     
@@ -61,7 +61,7 @@ if($checkcouponrecorder>0) {}else{
     //  $dec--;
      //==============
      $totalprice= $totalprice - $totalprice* $coupondiscount/100;
-     $stmt=$con->prepare("UPDATE `coupon` SET `coupon_count`= $dec WHERE coupon_id = '$orderscoupon' AND owneritems_id ='$owneritemsid'");
+     $stmt=$con->prepare("UPDATE `coupon` SET `coupon_count`= $dec WHERE coupon_id = '$orderscoupon'");
          $stmt->execute();
     
          // update of coupon count => decrease 1
@@ -69,8 +69,7 @@ if($checkcouponrecorder>0) {}else{
             "couponrecorder_usersid"=>$usersid,// nanme colum in musql == var username
             "couponrecorder_couponname"=>$couponrecordercouponname,
              "couponrecorder_date"=>$now,
-           
-            
+                     
         );
         insertData('couponrecorder',$data1,false); 
     }

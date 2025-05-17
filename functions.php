@@ -297,9 +297,69 @@ function insertNotification($title,$body,$usersid,$topic, $pageid, $pagename){
 }
 
 
-//============================ delivery
+//============================ new sen message
+
+// function sendGCM($title, $message, $topic, $pageid, $pagename)
+// {
 
 
+//     $url = 'https://fcm.googleapis.com/v1/projects/ecommeria/messages:send';
+
+//     // $fields = array(
+//     //     "to" => '/topics/' . $topic,
+//     //     'priority' => 'high',
+//     //     'content_available' => true,
+
+//     //     'notification' => array(
+//     //         "body" =>  $message,
+//     //         "title" =>  $title,
+//     //         "click_action" => "FLUTTER_NOTIFICATION_CLICK",
+//     //         "sound" => "default"
+
+//     //     ),
+//     //     'data' => array(
+//     //         "pageid" => $pageid,
+//     //         "pagename" => $pagename
+//     //     )
+
+//     // );
+// //========
+// $fields = array(
+//     "topic" =>  $topic,
+//     'priority' => 'high',
+//     'content_available' => true,
+
+//     'notification' => array(
+//         "body" =>  $message,
+//         "title" =>  $title,
+//         "click_action" => "FLUTTER_NOTIFICATION_CLICK",
+//         "sound" => "default"
+
+//     ),
+//     'data' => array(
+//         "pageid" => $pageid,
+//         "pagename" => $pagename
+//     )
+
+// );
+
+//     $fields = json_encode($fields);
+//     $headers = array(
+//         'Authorization: Bearer ' . "AAAAbqyJrkw:APA91bERK8hqD1i29ySvA5MEYYHWpafMngazqhiTmMeu3Y6ItA7KtdgfkGVjDMYUq0qYAmJVN4ZDlLbiaQuSWnUmNazgp-cwA0GA8S6vhdJ2aWh4y9xeSSR15s0b9Wr10TwoQL8Y0B3r",
+//         'Content-Type: application/json'
+//     );
+
+//     $ch = curl_init();
+//     curl_setopt($ch, CURLOPT_URL, $url);
+//     curl_setopt($ch, CURLOPT_POST, true);
+//     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//     curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+
+//     $result = curl_exec($ch);
+//     return $result;
+//     curl_close($ch);
+// }
 
 /// =======================================
 

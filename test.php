@@ -23,13 +23,13 @@ include './connect.php';
 // mail($to,$title,$message,$header);
 
 // ==================================
-// imageUpload("file");// file => will added in test
+imageUpload("file");// file => will added in test
 
 // ===============================
 
-$notAuth="";
-$usersid= filterRequest("usersid");
-sendGCM("hi", "how are you", "users", "users$usersid","none", "none");
-echo "send";
+// $notAuth="";
+// $usersid= filterRequest("usersid");
+
+// echo "send";
 
 ?>

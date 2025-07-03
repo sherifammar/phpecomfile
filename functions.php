@@ -369,3 +369,164 @@ function insertNotification($title,$body,$usersid,$topic, $pageid, $pagename){
 //  mail($to,$title,$messageو$header);
    
 // }
+// ===== كود محسن بواسطه claude
+// function sendGCM($title, $message, $topic, $pageid, $pagename)
+// {
+//     $url = 'https://fcm.googleapis.com/v1/projects/delivery-dc031/messages:send';
+    
+//     // التنسيق الصحيح والمحسن للـ FCM v1 API
+//     $fields = [
+//         "message" => [
+//             "topic" => $topic,
+//             "notification" => [
+//                 "title" => $title,
+//                 "body" => $message
+//             ],
+//             "data" => [
+//                 "pageid" => (string)$pageid,
+//                 "pagename" => $pagename,
+//                 "click_action" => "FLUTTER_NOTIFICATION_CLICK"
+//             ],
+//             "android" => [
+//                 "priority" => "high",
+//                 "notification" => [
+//                     "sound" => "default",
+//                     "click_action" => "FLUTTER_NOTIFICATION_CLICK"
+//                 ]
+//             ],
+//             "apns" => [
+//                 "headers" => [
+//                     "apns-priority" => "10"
+//                 ],
+//                 "payload" => [
+//                     "aps" => [
+//                         "alert" => [
+//                             "title" => $title,
+//                             "body" => $message
+//                         ],
+//                         "sound" => "default",
+//                         "content-available" => 1
+//                     ]
+//                 ]
+//             ]
+//         ]
+//     ];
+    
+//     $headers = [
+//         'Authorization: Bearer ' . "ya29.c.c0ASRK0GaiS1jBB5nQqzfxhD2GzgtFHDgYFJ_LKESRuy26xVd7dCkDvLTd7sH1_rC2IJ-kvw8KNgjQU8EovvNihfG2yI2CqgQOfGGTAjiGKj513pIp9FuzWyO5_u04OdFRvwVebtMznBM62n3Q-4QMBCO-8cjgM4lqoloqwuWyeCKuOkyAwqxU5vQP-42cpUSbdrCFOenFxTD2saJurD-TEfR7c2yMS51cDKcrSljuI8-a-hCXAUc21nt10t9VvWZK1IBrDQK963Qj9CO_28kBMinZyiv5kO6zjLFkX4THiYS31m4nJQ79gnS4WsIywssg8PFg3p6nWNeN_tIahs-51R-Fg1gETM8IUF-dZDU0we365G7p-RPNjvTEZ5LVN389AO3kBk948Op2uwt582V39fJqln3X_voc5h166ivJZJ9lljXpm52wwu1FV0f-goRzh1Yitbxc1kRB8xBv9fh9d7eFywXmlR8ZjlR3Bc3Fhq-Fv0O0er3WhubS-O9IkMFuhZ3ziecqVaW5yR2QpJ7b3uav-vOguSqnStU5dqytggcJI0kpMSxi3MldlB2qJQeVyZ7MmInm8Y4ymhM4jrSkFmF3bF9Yx9g4l1Mrv636gJSd-ORdpofQYIkkw4dJ7O4x4u3YjjM50htYpjSlvZdtJ6vMUbnpXZ643l5dl08f2iZ87xMJ6OpjssVB1FM-ZyehMox0zIFWFj9kbqj2np3kbBSa8RRX-gYk_6boSO_sri80g2IFWtVhXgmbeWYX7QcQkYF76mzrwbt6kY1j4t0gl2Uc26wtXFFcZ3xOiB8ygOjUpFhQtWjzhinni04r4biYUt5ZobuXkSn78q83pgS8itFM3XjmcvuXhnIOgtUm6vOph-iJg-fagv_V6kYoOdr2BOodwSQ56702Z7iJ6OaVv-cbbnyrtkbVazvZqxopSnSjlbuzrWJsrXdaSX97M82aiUOII4_xOx3poxsiy7sRfiMtYjtv5tg92fVnJ9yg",
+//         'Content-Type: application/json'
+//     ];
+    
+//     $ch = curl_init();
+//     curl_setopt($ch, CURLOPT_URL, $url);
+//     curl_setopt($ch, CURLOPT_POST, true);
+//     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+//     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+//     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    
+//     $result = curl_exec($ch);
+//     // $result = curl_exec($ch);
+//     return $result;
+//     curl_close($ch);
+//     // $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//     // $error = curl_error($ch);
+//     // curl_close($ch); // تم تصحيح الترتيب
+    
+//     // // معالجة الأخطاء والاستجابة
+//     // if ($error) {
+//     //     return [
+//     //         'success' => false,
+//     //         'error' => 'cURL Error: ' . $error
+//     //     ];
+//     // }
+    
+//     // $response = json_decode($result, true);
+    
+//     // if ($httpCode == 200) {
+//     //     return [
+//     //         'success' => true,
+//     //         'message' => 'Notification sent successfully',
+//     //         'response' => $response
+//     //     ];
+//     // } else {
+//     //     return [
+//     //         'success' => false,
+//     //         'http_code' => $httpCode,
+//     //         'error' => 'FCM Error',
+//     //         'response' => $response
+//     //     ];
+//     // }
+// }
+
+// // نسخة مبسطة من الكود الأصلي مع الإصلاحات الأساسية فقط
+// function sendGCM_Fixed($title, $message, $topic, $pageid, $pagename)
+// {
+//     $url = 'https://fcm.googleapis.com/v1/projects/delivery-dc031/messages:send';
+    
+//     // الكود الأصلي مع تصحيحات بسيطة
+//     $fields = [
+//         "message" => [
+//             "topic" => $topic,
+//             "notification" => [
+//                 "body" => $message,
+//                 "title" => $title,
+//                 "click_action" => "FLUTTER_NOTIFICATION_CLICK",
+//                 "sound" => "default"
+//             ],
+//             "data" => [
+//                 "pageid" => (string)$pageid,
+//                 "pagename" => $pagename
+//             ],
+//             "android" => [
+//                 "priority" => "high"
+//             ]
+//         ]
+//     ];
+    
+//     $headers = [
+//         'Authorization: Bearer ' . "ya29.c.c0ASRK0GaiS1jBB5nQqzfxhD2GzgtFHDgYFJ_LKESRuy26xVd7dCkDvLTd7sH1_rC2IJ-kvw8KNgjQU8EovvNihfG2yI2CqgQOfGGTAjiGKj513pIp9FuzWyO5_u04OdFRvwVebtMznBM62n3Q-4QMBCO-8cjgM4lqoloqwuWyeCKuOkyAwqxU5vQP-42cpUSbdrCFOenFxTD2saJurD-TEfR7c2yMS51cDKcrSljuI8-a-hCXAUc21nt10t9VvWZK1IBrDQK963Qj9CO_28kBMinZyiv5kO6zjLFkX4THiYS31m4nJQ79gnS4WsIywssg8PFg3p6nWNeN_tIahs-51R-Fg1gETM8IUF-dZDU0we365G7p-RPNjvTEZ5LVN389AO3kBk948Op2uwt582V39fJqln3X_voc5h166ivJZJ9lljXpm52wwu1FV0f-goRzh1Yitbxc1kRB8xBv9fh9d7eFywXmlR8ZjlR3Bc3Fhq-Fv0O0er3WhubS-O9IkMFuhZ3ziecqVaW5yR2QpJ7b3uav-vOguSqnStU5dqytggcJI0kpMSxi3MldlB2qJQeVyZ7MmInm8Y4ymhM4jrSkFmF3bF9Yx9g4l1Mrv636gJSd-ORdpofQYIkkw4dJ7O4x4u3YjjM50htYpjSlvZdtJ6vMUbnpXZ643l5dl08f2iZ87xMJ6OpjssVB1FM-ZyehMox0zIFWFj9kbqj2np3kbBSa8RRX-gYk_6boSO_sri80g2IFWtVhXgmbeWYX7QcQkYF76mzrwbt6kY1j4t0gl2Uc26wtXFFcZ3xOiB8ygOjUpFhQtWjzhinni04r4biYUt5ZobuXkSn78q83pgS8itFM3XjmcvuXhnIOgtUm6vOph-iJg-fagv_V6kYoOdr2BOodwSQ56702Z7iJ6OaVv-cbbnyrtkbVazvZqxopSnSjlbuzrWJsrXdaSX97M82aiUOII4_xOx3poxsiy7sRfiMtYjtv5tg92fVnJ9yg",
+//         'Content-Type: application/json'
+//     ];
+    
+//     $ch = curl_init();
+//     curl_setopt($ch, CURLOPT_URL, $url);
+//     curl_setopt($ch, CURLOPT_POST, true);
+//     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+    
+//     $result = curl_exec($ch);
+//     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//     curl_close($ch); // تم تصحيح الترتيب
+    
+//     // استجابة مبسطة
+//     if ($httpCode == 200) {
+//         return $result;
+//     } else {
+//         return json_encode([
+//             'error' => 'HTTP ' . $httpCode,
+//             'response' => $result
+//         ]);
+//     }
+// }
+
+// // اختبار الكود
+// echo "=== اختبار الكود المحسن ===\n";
+// $result = sendGCM(
+//     "إشعار تجريبي",
+//     "هذا اختبار للكود المحسن",
+//     "test_topic",
+//     123,
+//     "home"
+// );
+
+// if ($result['success']) {
+//     echo "✅ تم إرسال الإشعار بنجاح!\n";
+// } else {
+//     echo "❌ فشل الإرسال: " . $result['error'] . "\n";
+// }
+
+// print_r($result);
+// //=========

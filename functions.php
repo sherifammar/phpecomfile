@@ -239,7 +239,7 @@ function result($count){
 
 }
 
-//===============================================================الكود قديم *** لن يعمل ****
+//=============================================================== وائل ابوحمزهالكود قديم *** لن يعمل ****
 
 function sendGCM($title, $message, $topic, $pageid, $pagename)
 {
@@ -295,151 +295,637 @@ function insertNotification($title,$body,$usersid,$topic, $pageid, $pagename){
     return $count;
 
 }
-//===========تم تحسيب بواسطه chat + claude 26-7-2025 ==
-function sendGCM($title, $message, $topic, $pageid = null, $pagename = null, $options = []) 
-{
-    // إعدادات افتراضية
-    $defaultOptions = [
-        'server_key' => 'AAAAbqyJrkw:APA91bERK8hqD1i29ySvA5MEYYHWpafMngazqhiTmMeu3Y6ItA7KtdgfkGVjDMYUq0qYAmJVN4ZDlLbiaQuSWnUmNazgp-cwA0GA8S6vhdJ2aWh4y9xeSSR15s0b9Wr10TwoQL8Y0B3r',
-        'priority' => 'high',
-        'sound' => 'default',
-        'icon' => 'ic_notification',
-        'color' => '#FF6B6B',
-        'timeout' => 30,
-        'return_details' => false
-    ];
+//===========تم تحسيب بواسطه chat + claude 26-7-2025  -- هذا الكود سوف لايعمل فى المستقبل يجبب عد م الاستخدام ==
+// function sendGCM($title, $message, $topic, $pageid = null, $pagename = null, $options = []) 
+// {
+//     // إعدادات افتراضية
+//     $defaultOptions = [
+//         'server_key' => 'AAAAbqyJrkw:APA91bERK8hqD1i29ySvA5MEYYHWpafMngazqhiTmMeu3Y6ItA7KtdgfkGVjDMYUq0qYAmJVN4ZDlLbiaQuSWnUmNazgp-cwA0GA8S6vhdJ2aWh4y9xeSSR15s0b9Wr10TwoQL8Y0B3r',
+//         'priority' => 'high',
+//         'sound' => 'default',
+//         'icon' => 'ic_notification',
+//         'color' => '#FF6B6B',
+//         'timeout' => 30,
+//         'return_details' => false
+//     ];
     
-    $options = array_merge($defaultOptions, $options);
+//     $options = array_merge($defaultOptions, $options);
     
-    try {
-        // التحقق من المعاملات المطلوبة
-        if (empty($title) || empty($message) || empty($topic)) {
-            throw new Exception('العنوان والرسالة والموضوع مطلوبة');
-        }
+//     try {
+//         // التحقق من المعاملات المطلوبة
+//         if (empty($title) || empty($message) || empty($topic)) {
+//             throw new Exception('العنوان والرسالة والموضوع مطلوبة');
+//         }
         
-        $url = 'https://fcm.googleapis.com/fcm/send';
+//         $url = 'https://fcm.googleapis.com/fcm/send';
         
-        // بناء البيانات
-        $payload = [
-            "to" => '/topics/' . $topic,
-            'priority' => $options['priority'],
-            'content_available' => true,
-            'notification' => [
-                "body" => $message,
-                "title" => $title,
-                "click_action" => "FLUTTER_NOTIFICATION_CLICK",
-                "sound" => $options['sound'],
-                "icon" => $options['icon'],
-                "color" => $options['color']
-            ],
-            'data' => [
-                "timestamp" => time(),
-                "type" => "navigation"
-            ]
-        ];
+//         // بناء البيانات
+//         $payload = [
+//             "to" => '/topics/' . $topic,
+//             'priority' => $options['priority'],
+//             'content_available' => true,
+//             'notification' => [
+//                 "body" => $message,
+//                 "title" => $title,
+//                 "click_action" => "FLUTTER_NOTIFICATION_CLICK",
+//                 "sound" => $options['sound'],
+//                 "icon" => $options['icon'],
+//                 "color" => $options['color']
+//             ],
+//             'data' => [
+//                 "timestamp" => time(),
+//                 "type" => "navigation"
+//             ]
+//         ];
         
-        // إضافة البيانات الإضافية إذا كانت متوفرة
-        if ($pageid !== null) {
-            $payload['data']['pageid'] = (string)$pageid;
-        }
-        if ($pagename !== null) {
-            $payload['data']['pagename'] = $pagename;
-        }
+//         // إضافة البيانات الإضافية إذا كانت متوفرة
+//         if ($pageid !== null) {
+//             $payload['data']['pageid'] = (string)$pageid;
+//         }
+//         if ($pagename !== null) {
+//             $payload['data']['pagename'] = $pagename;
+//         }
         
-        // تحويل إلى JSON
-        $jsonPayload = json_encode($payload);
+//         // تحويل إلى JSON
+//         $jsonPayload = json_encode($payload);
         
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception('خطأ في تحويل البيانات إلى JSON: ' . json_last_error_msg());
-        }
+//         if (json_last_error() !== JSON_ERROR_NONE) {
+//             throw new Exception('خطأ في تحويل البيانات إلى JSON: ' . json_last_error_msg());
+//         }
         
-        // إعداد الHeaders
-        $headers = [
-            'Authorization: key=' . $options['server_key'],
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($jsonPayload)
-        ];
+//         // إعداد الHeaders
+//         $headers = [
+//             'Authorization: key=' . $options['server_key'],
+//             'Content-Type: application/json',
+//             'Content-Length: ' . strlen($jsonPayload)
+//         ];
         
-        // إعداد cURL محسن
-        $ch = curl_init();
-        curl_setopt_array($ch, [
-            CURLOPT_URL => $url,
-            CURLOPT_POST => true,
-            CURLOPT_HTTPHEADER => $headers,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POSTFIELDS => $jsonPayload,
-            CURLOPT_TIMEOUT => $options['timeout'],
-            CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_SSL_VERIFYHOST => 2,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_MAXREDIRS => 3,
-            CURLOPT_USERAGENT => 'FCM-PHP-Client/1.0'
-        ]);
+//         // إعداد cURL محسن
+//         $ch = curl_init();
+//         curl_setopt_array($ch, [
+//             CURLOPT_URL => $url,
+//             CURLOPT_POST => true,
+//             CURLOPT_HTTPHEADER => $headers,
+//             CURLOPT_RETURNTRANSFER => true,
+//             CURLOPT_POSTFIELDS => $jsonPayload,
+//             CURLOPT_TIMEOUT => $options['timeout'],
+//             CURLOPT_CONNECTTIMEOUT => 10,
+//             CURLOPT_SSL_VERIFYPEER => true,
+//             CURLOPT_SSL_VERIFYHOST => 2,
+//             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
+//             CURLOPT_FOLLOWLOCATION => true,
+//             CURLOPT_MAXREDIRS => 3,
+//             CURLOPT_USERAGENT => 'FCM-PHP-Client/1.0'
+//         ]);
         
-        $result = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $curlError = curl_error($ch);
-        curl_close($ch);
+//         $result = curl_exec($ch);
+//         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//         $curlError = curl_error($ch);
+//         curl_close($ch);
         
-        // التحقق من أخطاء cURL
-        if ($result === false) {
-            throw new Exception("خطأ في الاتصال: " . $curlError);
-        }
+//         // التحقق من أخطاء cURL
+//         if ($result === false) {
+//             throw new Exception("خطأ في الاتصال: " . $curlError);
+//         }
         
-        // فك تشفير الاستجابة
-        $response = json_decode($result, true);
+//         // فك تشفير الاستجابة
+//         $response = json_decode($result, true);
         
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception('خطأ في قراءة استجابة الخادم: ' . json_last_error_msg());
-        }
+//         if (json_last_error() !== JSON_ERROR_NONE) {
+//             throw new Exception('خطأ في قراءة استجابة الخادم: ' . json_last_error_msg());
+//         }
         
-        // التحقق من رمز الاستجابة
-        if ($httpCode !== 200) {
-            $errorMessage = 'خطأ HTTP: ' . $httpCode;
-            if (isset($response['error'])) {
-                $errorMessage .= ' - ' . $response['error'];
-            }
-            throw new Exception($errorMessage);
-        }
+//         // التحقق من رمز الاستجابة
+//         if ($httpCode !== 200) {
+//             $errorMessage = 'خطأ HTTP: ' . $httpCode;
+//             if (isset($response['error'])) {
+//                 $errorMessage .= ' - ' . $response['error'];
+//             }
+//             throw new Exception($errorMessage);
+//         }
         
-        // التحقق من نجاح الإرسال
-        if (isset($response['failure']) && $response['failure'] > 0) {
-            $errorDetails = isset($response['results'][0]['error']) 
-                ? $response['results'][0]['error'] 
-                : 'خطأ غير محدد';
-            throw new Exception('فشل في إرسال الإشعار: ' . $errorDetails);
-        }
+//         // التحقق من نجاح الإرسال
+//         if (isset($response['failure']) && $response['failure'] > 0) {
+//             $errorDetails = isset($response['results'][0]['error']) 
+//                 ? $response['results'][0]['error'] 
+//                 : 'خطأ غير محدد';
+//             throw new Exception('فشل في إرسال الإشعار: ' . $errorDetails);
+//         }
         
-        // إرجاع النتيجة حسب الخيارات
-        if ($options['return_details']) {
-            return [
-                'success' => true,
-                'message_id' => $response['results'][0]['message_id'] ?? null,
-                'response' => $response,
-                'http_code' => $httpCode
-            ];
-        }
+//         // إرجاع النتيجة حسب الخيارات
+//         if ($options['return_details']) {
+//             return [
+//                 'success' => true,
+//                 'message_id' => $response['results'][0]['message_id'] ?? null,
+//                 'response' => $response,
+//                 'http_code' => $httpCode
+//             ];
+//         }
         
-        return $result;
+//         return $result;
         
-    } catch (Exception $e) {
-        // تسجيل الخطأ (اختياري)
-        error_log("FCM Error: " . $e->getMessage());
+//     } catch (Exception $e) {
+//         // تسجيل الخطأ (اختياري)
+//         error_log("FCM Error: " . $e->getMessage());
         
-        if ($options['return_details']) {
-            return [
-                'success' => false,
-                'error' => $e->getMessage(),
-                'http_code' => $httpCode ?? null
-            ];
-        }
+//         if ($options['return_details']) {
+//             return [
+//                 'success' => false,
+//                 'error' => $e->getMessage(),
+//                 'http_code' => $httpCode ?? null
+//             ];
+//         }
         
-        return json_encode(['error' => $e->getMessage()]);
-    }
-}
+//         return json_encode(['error' => $e->getMessage()]);
+//     }
+// }
 
+//===   بواسطه chat  و لكن اقل جود  من claude هو اخر تدحث firebase  27-7-20025باستخدام HTTP v1 APIاخر تحديث
+// أولاً: ⚙️ التجهيز المسبق لمرة واحدة
+// 1. أنشئ حساب خدمة (Service Account):
+// من Google Cloud Console:
+
+// arduino
+// نسخ
+// تحرير
+// https://console.cloud.google.com/iam-admin/serviceaccounts
+// اختر المشروع المرتبط بـ Firebase.
+
+// أنشئ حساب خدمة جديد.
+
+// امنحه الصلاحية: "Firebase Admin SDK" > "Firebase Admin"
+
+// نزّل ملف JSON الخاص بالحساب (service-account.json)
+
+// 2. ثبت مكتبة Google Auth (باستخدام Composer):
+// bash
+// نسخ
+// تحرير
+// composer require google/auth
+// ✅ الكود المحوّل باستخدام HTTP v1 API
+// ✨ دالة sendFCM_HTTPv1 (بديلة sendGCM):
+// php
+// نسخ
+// تحرير
+// require_once 'vendor/autoload.php'; // تأكد من تحميل Google Auth
+
+// function getAccessToken($serviceAccountPath) {
+//     $client = new \Google\Auth\OAuth2([
+//         'audience' => 'https://oauth2.googleapis.com/token',
+//         'issuer' => json_decode(file_get_contents($serviceAccountPath), true)['client_email'],
+//         'signingAlgorithm' => 'RS256',
+//         'signingKey' => file_get_contents($serviceAccountPath),
+//         'tokenCredentialUri' => 'https://oauth2.googleapis.com/token',
+//         'scope' => 'https://www.googleapis.com/auth/firebase.messaging',
+//     ]);
+
+//     $token = $client->fetchAuthToken();
+//     return $token['access_token'] ?? null;
+// }
+
+// function sendFCM_HTTPv1($title, $message, $topic, $pageid = null, $pagename = null, $options = [])
+// {
+//     $defaultOptions = [
+//         'service_account' => __DIR__ . '/service-account.json',
+//         'project_id' => 'your-firebase-project-id', // 🔁 استبدله بمشروعك
+//         'priority' => 'high',
+//         'sound' => 'default',
+//         'icon' => 'ic_notification',
+//         'color' => '#FF6B6B',
+//         'timeout' => 30,
+//         'return_details' => false
+//     ];
+
+//     $options = array_merge($defaultOptions, $options);
+
+//     try {
+//         $accessToken = getAccessToken($options['service_account']);
+//         if (!$accessToken) {
+//             throw new Exception('فشل في الحصول على Access Token');
+//         }
+
+//         $url = "https://fcm.googleapis.com/v1/projects/{$options['project_id']}/messages:send";
+
+//         $payload = [
+//             'message' => [
+//                 'topic' => $topic,
+//                 'notification' => [
+//                     'title' => $title,
+//                     'body' => $message
+//                 ],
+//                 'data' => [
+//                     'timestamp' => (string)time(),
+//                     'type' => 'navigation',
+//                     'click_action' => 'FLUTTER_NOTIFICATION_CLICK'
+//                 ],
+//                 'android' => [
+//                     'priority' => $options['priority'],
+//                     'notification' => [
+//                         'sound' => $options['sound'],
+//                         'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+//                         'color' => $options['color'],
+//                         'icon' => $options['icon']
+//                     ]
+//                 ],
+//                 'apns' => [
+//                     'payload' => [
+//                         'aps' => [
+//                             'sound' => $options['sound'],
+//                             'content-available' => 1
+//                         ]
+//                     ]
+//                 ]
+//             ]
+//         ];
+
+//         if ($pageid !== null) {
+//             $payload['message']['data']['pageid'] = (string)$pageid;
+//         }
+//         if ($pagename !== null) {
+//             $payload['message']['data']['pagename'] = $pagename;
+//         }
+
+//         $jsonPayload = json_encode($payload);
+
+//         $headers = [
+//             'Authorization: Bearer ' . $accessToken,
+//             'Content-Type: application/json',
+//             'Content-Length: ' . strlen($jsonPayload)
+//         ];
+
+//         $ch = curl_init();
+//         curl_setopt_array($ch, [
+//             CURLOPT_URL => $url,
+//             CURLOPT_POST => true,
+//             CURLOPT_HTTPHEADER => $headers,
+//             CURLOPT_RETURNTRANSFER => true,
+//             CURLOPT_POSTFIELDS => $jsonPayload,
+//             CURLOPT_TIMEOUT => $options['timeout'],
+//             CURLOPT_CONNECTTIMEOUT => 10,
+//             CURLOPT_SSL_VERIFYPEER => true,
+//             CURLOPT_SSL_VERIFYHOST => 2,
+//             CURLOPT_FOLLOWLOCATION => true,
+//             CURLOPT_MAXREDIRS => 3,
+//             CURLOPT_USERAGENT => 'FCM-HTTPv1-Client/1.0'
+//         ]);
+
+//         $result = curl_exec($ch);
+//         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//         $curlError = curl_error($ch);
+//         curl_close($ch);
+
+//         if ($result === false) {
+//             throw new Exception("cURL Error: " . $curlError);
+//         }
+
+//         $response = json_decode($result, true);
+
+//         if ($httpCode !== 200) {
+//             throw new Exception("FCM Error ({$httpCode}): " . ($response['error']['message'] ?? 'غير معروف'));
+//         }
+
+//         if ($options['return_details']) {
+//             return [
+//                 'success' => true,
+//                 'response' => $response,
+//                 'http_code' => $httpCode
+//             ];
+//         }
+
+//         return true;
+
+//     } catch (Exception $e) {
+//         error_log("FCM HTTPv1 Error: " . $e->getMessage());
+//         return $options['return_details'] ? [
+//             'success' => false,
+//             'error' => $e->getMessage()
+//         ] : false;
+//     }
+// }
+// ✅ الاستخدام:
+// php
+// نسخ
+// تحرير
+// sendFCM_HTTPv1(
+//     "رسالة جديدة 🔔",
+//     "مرحبا بك، لدينا إشعار مميز!",
+//     "news",
+//     101,
+//     "promotion",
+//     [
+//         'project_id' => 'your-project-id',
+//         'service_account' => __DIR__ . '/service-account.json',
+//         'return_details' => true
+//     ]
+// );
+//=================== 2**claude ai 27-7-2025 افضل من chat 
+// require_once 'vendor/autoload.php';
+
+// /**
+//  * نسخة محسنة من getAccessToken مع cache بسيط
+//  */
+// function getAccessToken($serviceAccountPath) {
+//     // Cache بسيط لتجنب طلب التوكن في كل مرة
+//     static $cachedToken = null;
+//     static $tokenExpiry = 0;
+    
+//     if ($cachedToken && time() < $tokenExpiry - 300) {
+//         return $cachedToken;
+//     }
+    
+//     try {
+//         // التحقق من وجود الملف
+//         if (!file_exists($serviceAccountPath)) {
+//             throw new Exception("ملف Service Account غير موجود: {$serviceAccountPath}");
+//         }
+        
+//         $serviceAccountData = json_decode(file_get_contents($serviceAccountPath), true);
+//         if (!$serviceAccountData || !isset($serviceAccountData['client_email'])) {
+//             throw new Exception("ملف Service Account غير صالح");
+//         }
+        
+//         $client = new \Google\Auth\OAuth2([
+//             'audience' => 'https://oauth2.googleapis.com/token',
+//             'issuer' => $serviceAccountData['client_email'],
+//             'signingAlgorithm' => 'RS256',
+//             'signingKey' => $serviceAccountData['private_key'],
+//             'tokenCredentialUri' => 'https://oauth2.googleapis.com/token',
+//             'scope' => 'https://www.googleapis.com/auth/firebase.messaging',
+//         ]);
+
+//         $token = $client->fetchAuthToken();
+        
+//         if (!isset($token['access_token'])) {
+//             throw new Exception('فشل في الحصول على Access Token');
+//         }
+        
+//         // حفظ التوكن مؤقتاً (55 دقيقة)
+//         $cachedToken = $token['access_token'];
+//         $tokenExpiry = time() + 3300;
+        
+//         return $cachedToken;
+        
+//     } catch (Exception $e) {
+//         error_log("خطأ في getAccessToken: " . $e->getMessage());
+//         return null;
+//     }
+// }
+
+// /**
+//  * نسخة محسنة من sendFCM_HTTPv1
+//  */
+// function sendFCM_HTTPv1($title, $message, $topic, $pageid = null, $pagename = null, $options = [])
+// {
+//     $defaultOptions = [
+//         'service_account' => __DIR__ . '/service-account.json',
+//         'project_id' => 'your-firebase-project-id', // 🔴 يجب تحديث هذا
+//         'priority' => 'high',
+//         'sound' => 'default',
+//         'icon' => 'ic_notification',
+//         'color' => '#FF6B6B',
+//         'timeout' => 30,
+//         'return_details' => false,
+//         'retry_attempts' => 2 // إضافة محاولات إعادة
+//     ];
+
+//     $options = array_merge($defaultOptions, $options);
+    
+//     // التحقق من المعاملات الأساسية
+//     if (empty($title) || empty($message) || empty($topic)) {
+//         $error = 'العنوان والرسالة والموضوع مطلوبة';
+//         return $options['return_details'] ? ['success' => false, 'error' => $error] : false;
+//     }
+    
+//     // التحقق من Project ID
+//     if ($options['project_id'] === 'your-firebase-project-id') {
+//         $error = 'يجب تحديث project_id بمعرف مشروعك الفعلي';
+//         return $options['return_details'] ? ['success' => false, 'error' => $error] : false;
+//     }
+
+//     $lastError = '';
+    
+//     // محاولة الإرسال مع إعادة المحاولة
+//     for ($attempt = 1; $attempt <= $options['retry_attempts']; $attempt++) {
+//         try {
+//             $accessToken = getAccessToken($options['service_account']);
+//             if (!$accessToken) {
+//                 throw new Exception('فشل في الحصول على Access Token');
+//             }
+
+//             $url = "https://fcm.googleapis.com/v1/projects/{$options['project_id']}/messages:send";
+
+//             // Payload محسن مع دعم أفضل للمنصات
+//             $payload = [
+//                 'message' => [
+//                     'topic' => $topic,
+//                     'notification' => [
+//                         'title' => $title,
+//                         'body' => $message
+//                     ],
+//                     'data' => [
+//                         'timestamp' => (string)time(),
+//                         'type' => 'navigation',
+//                         'click_action' => 'FLUTTER_NOTIFICATION_CLICK'
+//                     ],
+//                     'android' => [
+//                         'priority' => strtoupper($options['priority']),
+//                         'notification' => [
+//                             'sound' => $options['sound'],
+//                             'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+//                             'color' => $options['color'],
+//                             'icon' => $options['icon'],
+//                             'channel_id' => 'default_channel', // مهم للأندرويد الحديث
+//                             'priority' => 'high'
+//                         ],
+//                         'ttl' => '86400s' // 24 ساعة
+//                     ],
+//                     'apns' => [
+//                         'headers' => [
+//                             'apns-priority' => '10'
+//                         ],
+//                         'payload' => [
+//                             'aps' => [
+//                                 'sound' => $options['sound'],
+//                                 'content-available' => 1,
+//                                 'alert' => [
+//                                     'title' => $title,
+//                                     'body' => $message
+//                                 ]
+//                             ]
+//                         ]
+//                     ]
+//                 ]
+//             ];
+
+//             // إضافة البيانات الإضافية
+//             if ($pageid !== null) {
+//                 $payload['message']['data']['pageid'] = (string)$pageid;
+//             }
+//             if ($pagename !== null) {
+//                 $payload['message']['data']['pagename'] = $pagename;
+//             }
+
+//             $jsonPayload = json_encode($payload, JSON_UNESCAPED_UNICODE);
+            
+//             // التحقق من صحة JSON
+//             if (json_last_error() !== JSON_ERROR_NONE) {
+//                 throw new Exception('خطأ في تحويل البيانات إلى JSON: ' . json_last_error_msg());
+//             }
+
+//             $headers = [
+//                 'Authorization: Bearer ' . $accessToken,
+//                 'Content-Type: application/json; charset=utf-8',
+//                 'Content-Length: ' . strlen($jsonPayload),
+//                 'Accept: application/json'
+//             ];
+
+//             // إعدادات cURL محسنة
+//             $ch = curl_init();
+//             curl_setopt_array($ch, [
+//                 CURLOPT_URL => $url,
+//                 CURLOPT_POST => true,
+//                 CURLOPT_HTTPHEADER => $headers,
+//                 CURLOPT_RETURNTRANSFER => true,
+//                 CURLOPT_POSTFIELDS => $jsonPayload,
+//                 CURLOPT_TIMEOUT => $options['timeout'],
+//                 CURLOPT_CONNECTTIMEOUT => 10,
+//                 CURLOPT_SSL_VERIFYPEER => true,
+//                 CURLOPT_SSL_VERIFYHOST => 2,
+//                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0, // HTTP/2
+//                 CURLOPT_ENCODING => 'gzip, deflate', // Compression
+//                 CURLOPT_FOLLOWLOCATION => true,
+//                 CURLOPT_MAXREDIRS => 3,
+//                 CURLOPT_USERAGENT => 'FCM-HTTPv1-Client/2.0'
+//             ]);
+
+//             $result = curl_exec($ch);
+//             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+//             $curlError = curl_error($ch);
+//             curl_close($ch);
+
+//             if ($result === false) {
+//                 throw new Exception("cURL Error: " . $curlError);
+//             }
+
+//             $response = json_decode($result, true);
+            
+//             // التحقق من JSON response
+//             if (json_last_error() !== JSON_ERROR_NONE) {
+//                 throw new Exception('خطأ في قراءة استجابة الخادم: ' . json_last_error_msg());
+//             }
+
+//             // التحقق من نجاح الطلب
+//             if ($httpCode === 200 && isset($response['name'])) {
+//                 // نجح الإرسال
+//                 if ($options['return_details']) {
+//                     return [
+//                         'success' => true,
+//                         'message_id' => $response['name'],
+//                         'response' => $response,
+//                         'http_code' => $httpCode,
+//                         'attempt' => $attempt
+//                     ];
+//                 }
+//                 return true;
+//             }
+
+//             // معالجة الأخطاء المحسنة
+//             $errorMessage = "FCM Error ({$httpCode})";
+//             if (isset($response['error']['message'])) {
+//                 $errorMessage .= ": " . $response['error']['message'];
+//             } else {
+//                 $errorMessage .= ": " . ($result ?: 'استجابة فارغة');
+//             }
+            
+//             throw new Exception($errorMessage);
+
+//         } catch (Exception $e) {
+//             $lastError = $e->getMessage();
+//             error_log("FCM HTTPv1 Error (المحاولة {$attempt}): " . $lastError);
+            
+//             // إذا كان هذا آخر محاولة أو خطأ غير قابل للإعادة
+//             if ($attempt >= $options['retry_attempts'] || 
+//                 strpos($lastError, 'Authentication') !== false ||
+//                 strpos($lastError, 'Invalid') !== false ||
+//                 strpos($lastError, 'Permission') !== false) {
+//                 break;
+//             }
+            
+//             // انتظار قصير قبل المحاولة التالية
+//             if ($attempt < $options['retry_attempts']) {
+//                 sleep(1);
+//             }
+//         }
+//     }
+
+//     // فشل في جميع المحاولات
+//     if ($options['return_details']) {
+//         return [
+//             'success' => false,
+//             'error' => $lastError,
+//             'attempts' => $options['retry_attempts']
+//         ];
+//     }
+    
+//     return false;
+// }
+
+// /**
+//  * دالة مساعدة للتحقق من الإعدادات
+//  */
+// function validateFirebaseSetup($serviceAccountPath, $projectId) {
+//     $issues = [];
+    
+//     if (!file_exists($serviceAccountPath)) {
+//         $issues[] = "ملف Service Account غير موجود: {$serviceAccountPath}";
+//     }
+    
+//     if ($projectId === 'your-firebase-project-id') {
+//         $issues[] = "يجب تحديث project_id في الخيارات";
+//     }
+    
+//     if (!class_exists('\Google\Auth\OAuth2')) {
+//         $issues[] = "مكتبة Google Auth غير مثبتة. قم بتشغيل: composer require google/auth";
+//     }
+    
+//     return $issues;
+// }
+
+// /**
+//  * مثال على الاستخدام
+//  */
+// function testFCM() {
+//     // التحقق من الإعدادات
+//     $issues = validateFirebaseSetup(__DIR__ . '/service-account.json', 'your-firebase-project-id');
+    
+//     if (!empty($issues)) {
+//         echo "مشاكل في الإعدادات:\n";
+//         foreach ($issues as $issue) {
+//             echo "- {$issue}\n";
+//         }
+//         return;
+//     }
+    
+//     // إرسال إشعار تجريبي
+//     $result = sendFCM_HTTPv1(
+//         'إشعار تجريبي',
+//         'مرحباً من Firebase HTTP v1 API',
+//         'test',
+//         123,
+//         'صفحة التجربة',
+//         [
+//             'project_id' => 'your-actual-project-id', // 🔴 حدث هذا
+//             'return_details' => true
+//         ]
+//     );
+    
+//     if ($result['success']) {
+//         echo "✅ تم إرسال الإشعار بنجاح!\n";
+//         echo "Message ID: " . $result['message_id'] . "\n";
+//     } else {
+//         echo "❌ فشل الإرسال: " . $result['error'] . "\n";
+//     }
+// }
 //============================ new sen message هذا الكود سئ و بواسطه chat + claude هذا الكود ملغى 
 
 // function sendGCM($title, $message, $topic, $pageid, $pagename)

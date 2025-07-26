@@ -239,7 +239,7 @@ function result($count){
 
 }
 
-//===============================================================
+//===============================================================الكود قديم *** لن يعمل ****
 
 function sendGCM($title, $message, $topic, $pageid, $pagename)
 {
@@ -295,9 +295,152 @@ function insertNotification($title,$body,$usersid,$topic, $pageid, $pagename){
     return $count;
 
 }
+//===========تم تحسيب بواسطه chat + claude 26-7-2025 ==
+function sendGCM($title, $message, $topic, $pageid = null, $pagename = null, $options = []) 
+{
+    // إعدادات افتراضية
+    $defaultOptions = [
+        'server_key' => 'AAAAbqyJrkw:APA91bERK8hqD1i29ySvA5MEYYHWpafMngazqhiTmMeu3Y6ItA7KtdgfkGVjDMYUq0qYAmJVN4ZDlLbiaQuSWnUmNazgp-cwA0GA8S6vhdJ2aWh4y9xeSSR15s0b9Wr10TwoQL8Y0B3r',
+        'priority' => 'high',
+        'sound' => 'default',
+        'icon' => 'ic_notification',
+        'color' => '#FF6B6B',
+        'timeout' => 30,
+        'return_details' => false
+    ];
+    
+    $options = array_merge($defaultOptions, $options);
+    
+    try {
+        // التحقق من المعاملات المطلوبة
+        if (empty($title) || empty($message) || empty($topic)) {
+            throw new Exception('العنوان والرسالة والموضوع مطلوبة');
+        }
+        
+        $url = 'https://fcm.googleapis.com/fcm/send';
+        
+        // بناء البيانات
+        $payload = [
+            "to" => '/topics/' . $topic,
+            'priority' => $options['priority'],
+            'content_available' => true,
+            'notification' => [
+                "body" => $message,
+                "title" => $title,
+                "click_action" => "FLUTTER_NOTIFICATION_CLICK",
+                "sound" => $options['sound'],
+                "icon" => $options['icon'],
+                "color" => $options['color']
+            ],
+            'data' => [
+                "timestamp" => time(),
+                "type" => "navigation"
+            ]
+        ];
+        
+        // إضافة البيانات الإضافية إذا كانت متوفرة
+        if ($pageid !== null) {
+            $payload['data']['pageid'] = (string)$pageid;
+        }
+        if ($pagename !== null) {
+            $payload['data']['pagename'] = $pagename;
+        }
+        
+        // تحويل إلى JSON
+        $jsonPayload = json_encode($payload);
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception('خطأ في تحويل البيانات إلى JSON: ' . json_last_error_msg());
+        }
+        
+        // إعداد الHeaders
+        $headers = [
+            'Authorization: key=' . $options['server_key'],
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($jsonPayload)
+        ];
+        
+        // إعداد cURL محسن
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $url,
+            CURLOPT_POST => true,
+            CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POSTFIELDS => $jsonPayload,
+            CURLOPT_TIMEOUT => $options['timeout'],
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS => 3,
+            CURLOPT_USERAGENT => 'FCM-PHP-Client/1.0'
+        ]);
+        
+        $result = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
+        curl_close($ch);
+        
+        // التحقق من أخطاء cURL
+        if ($result === false) {
+            throw new Exception("خطأ في الاتصال: " . $curlError);
+        }
+        
+        // فك تشفير الاستجابة
+        $response = json_decode($result, true);
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception('خطأ في قراءة استجابة الخادم: ' . json_last_error_msg());
+        }
+        
+        // التحقق من رمز الاستجابة
+        if ($httpCode !== 200) {
+            $errorMessage = 'خطأ HTTP: ' . $httpCode;
+            if (isset($response['error'])) {
+                $errorMessage .= ' - ' . $response['error'];
+            }
+            throw new Exception($errorMessage);
+        }
+        
+        // التحقق من نجاح الإرسال
+        if (isset($response['failure']) && $response['failure'] > 0) {
+            $errorDetails = isset($response['results'][0]['error']) 
+                ? $response['results'][0]['error'] 
+                : 'خطأ غير محدد';
+            throw new Exception('فشل في إرسال الإشعار: ' . $errorDetails);
+        }
+        
+        // إرجاع النتيجة حسب الخيارات
+        if ($options['return_details']) {
+            return [
+                'success' => true,
+                'message_id' => $response['results'][0]['message_id'] ?? null,
+                'response' => $response,
+                'http_code' => $httpCode
+            ];
+        }
+        
+        return $result;
+        
+    } catch (Exception $e) {
+        // تسجيل الخطأ (اختياري)
+        error_log("FCM Error: " . $e->getMessage());
+        
+        if ($options['return_details']) {
+            return [
+                'success' => false,
+                'error' => $e->getMessage(),
+                'http_code' => $httpCode ?? null
+            ];
+        }
+        
+        return json_encode(['error' => $e->getMessage()]);
+    }
+}
 
-
-//============================ new sen message
+//============================ new sen message هذا الكود سئ و بواسطه chat + claude هذا الكود ملغى 
 
 // function sendGCM($title, $message, $topic, $pageid, $pagename)
 // {

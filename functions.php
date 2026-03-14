@@ -628,6 +628,7 @@ function insertNotification($title,$body,$usersid,$topic, $pageid, $pagename){
 
 //.................التقييم 93% --14-3-2026 ********
 //=================== 2**claude ai 27-7-2025 افضل من chat 
+// لابد من اخد ملف service-account.json من firebase و وضعه فى نفس مسار functions.php . نفس مجلد php 
 
 // require_once 'vendor/autoload.php';
 

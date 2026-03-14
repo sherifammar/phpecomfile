@@ -290,7 +290,7 @@ function insertNotification($title,$body,$usersid,$topic, $pageid, $pagename){
     $stmt = $con->prepare("INSERT INTO `notification`( `notification_title`, `notification_body`, `notification_usersid`) VALUES (? ,? ,?)");
     $stmt->execute(array($title,$body,$usersid));
 
-    sendGCM($title, $body, $topic, $pageid, $pagename); // send notification
+    sendGCM($title, $body, $topic, $pageid, $pagename); // send notification ذات تقييم 93% يستخدم
     $count = $stmt->rowCount();
     return $count;
 
@@ -626,7 +626,7 @@ function insertNotification($title,$body,$usersid,$topic, $pageid, $pagename){
 
 //************************************************************************** */
 
-//.................التقييم 93% --14-3-2026 
+//.................التقييم 93% --14-3-2026 ********
 //=================== 2**claude ai 27-7-2025 افضل من chat 
 
 // require_once 'vendor/autoload.php';

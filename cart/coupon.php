@@ -2,14 +2,14 @@
 include "../connect.php";
 
 
-// $now= date("Y-m-d h:i:s"); // error => it is time now
+$now= date("Y-m-d h:i:s"); // error => it is time now
 
-// $couponname= filterRequest("couponname");
+$couponname= filterRequest("couponname");
 
 
 
-//  getData("coupon","coupon_name = '$couponname' AND coupon_expiredate > '$now' AND coupon_count > 0");
-//=========================test=====================
+ getData("coupon","coupon_name = '$couponname' AND coupon_expiredate > '$now' AND coupon_count > 0");
+// =========================test=====================
 
 //  getData("coupon","coupon_name = '$couponname' "); // for testing 
 
@@ -18,16 +18,16 @@ include "../connect.php";
 // $couponcount= filterRequest("couponcount");
 // getData("coupon","coupon_name = '$couponname' AND coupon_expiredate > '$now' AND coupon_count = '$couponcount'");
 
-//======================= now version ==
-$now= date("Y-m-d h:i:s"); // error => it is time now
+//======================= now version لجعل العميل يستخدم الكوبن مره واحده فقط  ==
+// $now= date("Y-m-d h:i:s"); // error => it is time now
 
-$couponname= filterRequest("couponname");
+// $couponname= filterRequest("couponname");
 
-$usersid= filterRequest("usersid");
+// $usersid= filterRequest("usersid");
 
-$checkcouponrecorder = getData("couponrecorder","couponrecorder_couponname = '$couponname' AND 	couponrecorder_usersid ='$usersid'" ,null ,false);
-if($checkcouponrecorder>0) {
-    echo json_encode(array("status" => "failure"));
-}else{
-    getData("coupon","coupon_name = '$couponname' AND coupon_expiredate > '$now' AND coupon_count > 0 ");
-}
+// $checkcouponrecorder = getData("couponrecorder","couponrecorder_couponname = '$couponname' AND 	couponrecorder_usersid ='$usersid'" ,null ,false);
+// if($checkcouponrecorder>0) {
+//     echo json_encode(array("status" => "failure"));
+// }else{
+//     getData("coupon","coupon_name = '$couponname' AND coupon_expiredate > '$now' AND coupon_count > 0 ");
+// }

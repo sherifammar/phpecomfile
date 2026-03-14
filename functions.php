@@ -440,7 +440,11 @@ function insertNotification($title,$body,$usersid,$topic, $pageid, $pagename){
 //     }
 // }
 
-//===   بواسطه chat  و لكن اقل جود  من claude هو اخر تدحث firebase  27-7-20025باستخدام HTTP v1 APIاخر تحديث
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+//===  ******  االتقييم %85 -- 14/3/2026
+
+//  بواسطه chat  و لكن اقل جود  من claude هو اخر تدحث firebase  27-7-20025باستخدام HTTP v1 APIاخر تحديث
 // أولاً: ⚙️ التجهيز المسبق لمرة واحدة
 // 1. أنشئ حساب خدمة (Service Account):
 // من Google Cloud Console:
@@ -617,8 +621,14 @@ function insertNotification($title,$body,$usersid,$topic, $pageid, $pagename){
 //         'service_account' => __DIR__ . '/service-account.json',
 //         'return_details' => true
 //     ]
-// );
+// 
+
+
+//************************************************************************** */
+
+//.................التقييم 93% --14-3-2026 
 //=================== 2**claude ai 27-7-2025 افضل من chat 
+
 // require_once 'vendor/autoload.php';
 
 // /**
@@ -926,6 +936,12 @@ function insertNotification($title,$body,$usersid,$topic, $pageid, $pagename){
 //         echo "❌ فشل الإرسال: " . $result['error'] . "\n";
 //     }
 // }
+
+/////************************************************************************** */
+
+
+//******** تلك الاكواد سيئه ... لا تستخدم ملغى  */
+
 //============================ new sen message هذا الكود سئ و بواسطه chat + claude هذا الكود ملغى 
 
 // function sendGCM($title, $message, $topic, $pageid, $pagename)
